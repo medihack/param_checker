@@ -8,9 +8,9 @@ Gem::Specification.new do |s|
   s.platform    = Gem::Platform::RUBY
   s.authors     = ["Kai Schlamp"]
   s.email       = ["schlamp@gmx.de"]
-  s.homepage    = "http://www.medihack.org"
+  s.homepage    = "https://github.com/medihack/param_checker"
   s.summary     = %q{Parameter parsing and validation}
-  s.description = %q{A library for parameter parsing and validation. A handy way to check user provided params in Rails.}
+  s.description = %q{A library for parameter validation and parsing. A handy way to check GET/POST params in Ruby webframeworks (like Rails or Sinatra).}
 
   s.rubyforge_project = "param_checker"
 
