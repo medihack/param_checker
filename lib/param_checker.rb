@@ -1,5 +1,8 @@
 module ParamChecker
-  def self.check_integer_param(param, default, min = nil, max = nil)
+
+  module_function
+
+  def check_integer_param(param, default, min = nil, max = nil)
     min_lambda = (min.nil? ? lambda { true } : lambda { param.strip.to_i >= min })
     max_lambda = (max.nil? ? lambda { true } : lambda { param.strip.to_i <= max })
 
@@ -10,7 +13,7 @@ module ParamChecker
     end
   end
 
-  def self.check_float_param(param, default, min = nil, max = nil)
+  def check_float_param(param, default, min = nil, max = nil)
     min_lambda = (min.nil? ? lambda { true } : lambda { param.strip.to_i >= min })
     max_lambda = (max.nil? ? lambda { true } : lambda { param.strip.to_i <= max })
 
@@ -21,7 +24,7 @@ module ParamChecker
     end
   end
 
-  def self.check_string_param(param, default, allowed)
+  def check_string_param(param, default, allowed)
     if (param && allowed.class == Regexp && param =~ allowed)
       param
     elsif (param && allowed.class == Array && allowed.include?(param))
@@ -33,7 +36,7 @@ module ParamChecker
     end
   end
 
-  def self.check_symbol_param(param, default, allowed)
+  def check_symbol_param(param, default, allowed)
     begin
       if (param && allowed.class == Regexp && param.to_s =~ allowed)
         param.to_sym
@@ -49,7 +52,7 @@ module ParamChecker
     end
   end
 
-  def self.check_boolean_param(param, default)
+  def check_boolean_param(param, default)
     if (param && param == "1" || param == "true")
       true
     elsif (param && param == "0" || param == "false")
@@ -58,4 +61,10 @@ module ParamChecker
       default
     end
   end
+
+  public :check_integer_param,
+         :check_float_param,
+         :check_string_param,
+         :check_symbol_param,
+         :check_boolean_param
 end
