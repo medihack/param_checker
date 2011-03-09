@@ -1,7 +1,7 @@
 $LOAD_PATH.unshift(File.dirname(__FILE__) + '/../lib')
 require 'param_checker'
 
-#load(File.dirname(__FILE__) + '/models.rb')
+load(File.dirname(__FILE__) + '/model.rb')
 
 RSpec.configure do |config|
   config.filter_run :focus => true
