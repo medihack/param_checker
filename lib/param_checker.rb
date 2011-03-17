@@ -7,7 +7,7 @@ module ParamChecker
   # +default+: the default integer to return if the check fails
   # +min+: the minimum value allowed (optional)
   # +max+: the maximum value allowed (optional)
-  def check_integer_param(param, default, min = nil, max = nil)
+  def check_integer(param, default, min = nil, max = nil)
     min_lambda = (min.nil? ? lambda { true } : lambda { param.strip.to_i >= min })
     max_lambda = (max.nil? ? lambda { true } : lambda { param.strip.to_i <= max })
 
@@ -23,7 +23,7 @@ module ParamChecker
   # +default+: the default float to return if the check fails
   # +min+: the minimum value allowed (optional)
   # +max+: the maximum value allowed (optional)
-  def check_float_param(param, default, min = nil, max = nil)
+  def check_float(param, default, min = nil, max = nil)
     min_lambda = (min.nil? ? lambda { true } : lambda { param.strip.to_i >= min })
     max_lambda = (max.nil? ? lambda { true } : lambda { param.strip.to_i <= max })
 
@@ -39,7 +39,7 @@ module ParamChecker
   # +default+: the default string to return if the check fails
   # +allowed+: the allowed string value to check +param+ against; could be
   #   a regular expression, a string or an array of strings
-  def check_string_param(param, default, allowed)
+  def check_string(param, default, allowed)
     if (param && allowed.class == Regexp && param =~ allowed)
       param
     elsif (param && allowed.class == Array && allowed.include?(param))
@@ -56,7 +56,7 @@ module ParamChecker
   # +default+: the default symbol to return if the check fails
   # +allowed+: the allowed symbol value to check +param+ against; could be
   #   a regular expression, a string, a symbol, an array of strings or an array of symbols.
-  def check_symbol_param(param, default, allowed)
+  def check_symbol(param, default, allowed)
     begin
       if (param && allowed.class == Regexp && param.to_s =~ allowed)
         param.to_sym
@@ -76,7 +76,7 @@ module ParamChecker
   # Allowed string parameters are "1" or "true" for +true+, and "0" or "false" for +false+.
   # +param+: the string parameter to check
   # +default+: the default boolean to return if the check fails
-  def check_boolean_param(param, default)
+  def check_boolean(param, default)
     if (param && param == "1" || param == "true")
       true
     elsif (param && param == "0" || param == "false")
@@ -86,9 +86,9 @@ module ParamChecker
     end
   end
 
-  public :check_integer_param,
-         :check_float_param,
-         :check_string_param,
-         :check_symbol_param,
-         :check_boolean_param
+  public :check_integer,
+         :check_float,
+         :check_string,
+         :check_symbol,
+         :check_boolean
 end
