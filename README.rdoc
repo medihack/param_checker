@@ -30,11 +30,11 @@ Instead of including the module you could also call all functions of the module 
 
 There are currently 5 supported functions:
 
-* +check_integer_param(param, default, min, max)+
-* +check_float_param(param, default, min, max)+
-* +check_string_param(param, default, allowed)+
-* +check_symbol_param(param, default, allowed)+
-* +check_boolean_param(param, default)+
+  check_integer_param(param, default, min, max)
+  check_float_param(param, default, min, max)
+  check_string_param(param, default, allowed)
+  check_symbol_param(param, default, allowed)
+  check_boolean_param(param, default)
 
 +param+ is always the string parameter to check. +default+ is a value that is returned when +param+ does not succeed the check.
 +min+ and +max+ in +check_integer_param+ and +check_float_param+ are the minimum and maximum allowed values of param. Both +min+ and +max+ options are optional. If they are not provided then no range is checked at all.
