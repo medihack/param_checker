@@ -41,11 +41,11 @@ module ParamChecker
   #   a regular expression, a string or an array of strings
   def check_string(param, default, allowed)
     if (param && allowed.class == Regexp && param =~ allowed)
-      param
+      param.to_s
     elsif (param && allowed.class == Array && allowed.include?(param))
-      param
+      param.to_s
     elsif (param && allowed.class == String && allowed == param)
-      param
+      param.to_s
     else
       default
     end
