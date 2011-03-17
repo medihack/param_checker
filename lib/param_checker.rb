@@ -30,7 +30,7 @@ module ParamChecker
     if (param && param.strip =~ /^-?[0-9]+(\.[0-9]+)?$/ && min_lambda.call && max_lambda.call)
       param.strip.to_f
     else
-      default.to_f
+      default
     end
   end
 
@@ -65,10 +65,10 @@ module ParamChecker
       elsif (param && (allowed.class == String || allowed.class == Symbol) && allowed.to_sym == param.to_sym)
         param.to_sym
       else
-        default.to_sym
+        default
       end
     rescue
-      default.to_sym
+      default
     end
   end
 

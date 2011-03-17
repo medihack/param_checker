@@ -13,6 +13,7 @@ describe "ParamChecker" do
     @model.check_integer("-5", 99).should == -5
     @model.check_integer(" 5 ", 99).should == 5
 
+    @model.check_integer(nil, 99).should == 99
     @model.check_integer("", 99).should == 99
     @model.check_integer("5abc", 99).should == 99
     @model.check_integer("5", 99, 6).should == 99
@@ -29,6 +30,7 @@ describe "ParamChecker" do
     @model.check_float("-5.1", 99.2).should == -5.1
     @model.check_float(" 5.1 ", 99.2).should == 5.1
 
+    @model.check_float(nil, 99.2).should == 99.2
     @model.check_float("", 99.2).should == 99.2
     @model.check_float("5abc", 99.2).should == 99.2
     @model.check_float("5", 99.2, 6.4).should == 99.2
@@ -44,6 +46,7 @@ describe "ParamChecker" do
     @model.check_string("", "dolor", /.*/).should == ""
     @model.check_string("", "dolor", "").should == ""
 
+    @model.check_string(nil, "dolor", /.*ore.*/).should == "dolor"
     @model.check_string("lorem", "dolor", /.*ips.*/).should == "dolor"
     @model.check_string("lorem", "dolor", ["patre", "ipsum"]).should == "dolor"
     @model.check_string("lorem", "dolor", "ipsum").should == "dolor"
@@ -54,10 +57,11 @@ describe "ParamChecker" do
     @model.check_symbol("lorem", :dolor, ["lorem", :ipsum]).should == :lorem
     @model.check_symbol("lorem", :dolor, :lorem).should == :lorem
 
+    @model.check_symbol(nil, :dolor, /.*ore.*/).should == :dolor
     @model.check_symbol("lorem", :dolor, /.*ips.*/).should == :dolor
     @model.check_symbol("lorem", :dolor, ["patre", "ipsum"]).should == :dolor
     @model.check_symbol("lorem", :dolor, "ipsum").should == :dolor
-    @model.check_symbol("lorem", "dolor", "ipsum").should == :dolor
+    @model.check_symbol("lorem", :dolor, "ipsum").should == :dolor
     @model.check_symbol("", :dolor, /.*/).should == :dolor
     @model.check_symbol("", :dolor, "").should == :dolor
   end
@@ -68,6 +72,7 @@ describe "ParamChecker" do
     @model.check_boolean("0", true).should == false
     @model.check_boolean("false", true).should == false
 
+    @model.check_boolean(nil, true).should == true
     @model.check_boolean("3", true).should == true
     @model.check_boolean("", true).should == true
     @model.check_boolean("abc", true).should == true
