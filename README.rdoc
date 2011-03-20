@@ -16,44 +16,44 @@ and afterwards (when using the Gemfile) execute
 
 == Usage
 
-Include the ParamChecker module where ever you like. I usually put it into my Rails +ApplicationController.rb+
+Include the ParamChecker module where ever you like. I usually put it into my Rails <tt>ApplicationController.rb</tt>
 
   class ApplicationController < ActionController::Base
     include ParamChecker
   end
 
-You can then simply call +check_string_param(param_to_check, "my default", ["foo", "bar"])+ in every controller.
+You can then simply call <tt>check_string(param_to_check, "my default", ["foo", "bar"])</tt> in every controller.
 
 Instead of including the module you could also call all functions of the module directly.
 
-  ParamChecker.check_string_param(param_to_check, "my default", ["foo", "bar"])
+  ParamChecker.check_string(param_to_check, "my default", ["foo", "bar"])
 
 There are currently 5 supported functions:
 
-  check_integer_param(param, default, min, max)
-  check_float_param(param, default, min, max)
-  check_string_param(param, default, allowed)
-  check_symbol_param(param, default, allowed)
-  check_boolean_param(param, default)
+  check_integer(param, default, min, max)
+  check_float(param, default, min, max)
+  check_string(param, default, allowed)
+  check_symbol(param, default, allowed)
+  check_boolean(param, default)
 
 +param+ is always the string parameter to check. +default+ is a value that is returned when +param+ does not succeed the check.
-+min+ and +max+ in +check_integer_param+ and +check_float_param+ are the minimum and maximum allowed values of param. Both +min+ and +max+ options are optional. If they are not provided then no range is checked at all.
-+allowed+ in +check_string_param+ and +check_symbol_param+ represent the allowed values of +param+. They can be either a string (resp. a symbol for +check_symbol_param+), a regular expression, or an array of strings (resp. symbols for +check_symbol_param+).
-+check_boolean_param+ evaluates "1" or "true" string as true and "0" or "false" string to false.
-All functions return the parsed and type cast value (check_integer_param returns an integer, check_symbol_param returns a symbol, and so on).
++min+ and +max+ in +check_integer+ and +check_float+ are the minimum and maximum allowed values of param. Both +min+ and +max+ options are optional. If they are not provided then no range is checked at all.
++allowed+ in +check_string+ and +check_symbol+ represent the allowed values of +param+. They can be either a string (resp. a symbol for +check_symbol+), a regular expression, or an array of strings (resp. symbols for +check_symbol+).
++check_boolean+ evaluates "1" or "true" string as true and "0" or "false" string to false.
+All functions return the parsed and type cast value (check_integer returns an integer, check_symbol returns a symbol, and so on).
 
 == Examples
 
 Below are some simple examples how I use those function in my controllers.
 
   # +max+ is not provided in this case. I just want to ensure that page is bigger than 1 and otherwise return 1.
-  page = check_integer_param(params[:page], 1, 1)
+  page = check_integer(params[:page], 1, 1)
 
   # Returns "name" if params[:field] is not "name" or "address"
-  field = check_string_param(params[:field], "name", ["name", "address"])
+  field = check_string(params[:field], "name", ["name", "address"])
 
   # Return the boolean if params[:accepted] is a valid boolean representation, and the default false otherwise.
-  accepted = check_boolean_param(params[:accepted], false)
+  accepted = check_boolean(params[:accepted], false)
 
 == Testing
 
