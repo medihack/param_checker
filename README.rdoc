@@ -1,6 +1,6 @@
 = ParamChecker
 
-ParamChecker is a small library for validation and parsing of user provided parameters. It is a handy way to check GET/POST params in Ruby webframeworks (like Rails or Sinatra).
+ParamChecker is a small Ruby library for validating and casting string parameters. It is for example a handy way to check GET/POST +params+ in Ruby On Rails.
 
 == Installation
 
@@ -22,9 +22,9 @@ Include the ParamChecker module where ever you like. I usually put it into my Ra
     include ParamChecker
   end
 
-You can then simply call <tt>check_string(param_to_check, "my default", ["foo", "bar"])</tt> in every controller.
+You can then simply call for example <tt>check_string(param_to_check, "my default", ["foo", "bar"])</tt> in every controller.
 
-Instead of including the module you could also call all functions of the module directly.
+Instead of including the module you could also call all functions of the module directly, like
 
   ParamChecker.check_string(param_to_check, "my default", ["foo", "bar"])
 
