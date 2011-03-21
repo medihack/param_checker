@@ -8,11 +8,11 @@ module ParamChecker
   # +min+: the minimum value allowed (optional)
   # +max+: the maximum value allowed (optional)
   def check_integer(param, default, min = nil, max = nil)
-    min_lambda = (min.nil? ? lambda { true } : lambda { param.strip.to_i >= min })
-    max_lambda = (max.nil? ? lambda { true } : lambda { param.strip.to_i <= max })
+    min_lambda = (min.nil? ? lambda { true } : lambda { param.to_i >= min })
+    max_lambda = (max.nil? ? lambda { true } : lambda { param.to_i <= max })
 
     if (param && param.strip =~ /^-?[0-9]+$/ && min_lambda.call && max_lambda.call)
-      param.strip.to_i
+      param.to_i
     else
       default
     end
@@ -24,11 +24,11 @@ module ParamChecker
   # +min+: the minimum value allowed (optional)
   # +max+: the maximum value allowed (optional)
   def check_float(param, default, min = nil, max = nil)
-    min_lambda = (min.nil? ? lambda { true } : lambda { param.strip.to_i >= min })
-    max_lambda = (max.nil? ? lambda { true } : lambda { param.strip.to_i <= max })
+    min_lambda = (min.nil? ? lambda { true } : lambda { param.to_i >= min })
+    max_lambda = (max.nil? ? lambda { true } : lambda { param.to_i <= max })
 
     if (param && param.strip =~ /^-?[0-9]+(\.[0-9]+)?$/ && min_lambda.call && max_lambda.call)
-      param.strip.to_f
+      param.to_f
     else
       default
     end
@@ -41,11 +41,11 @@ module ParamChecker
   #   a regular expression, a string or an array of strings
   def check_string(param, default, allowed)
     if (param && allowed.class == Regexp && param =~ allowed)
-      param.to_s
+      param
     elsif (param && allowed.class == Array && allowed.include?(param))
-      param.to_s
+      param
     elsif (param && allowed.class == String && allowed == param)
-      param.to_s
+      param
     else
       default
     end
@@ -57,17 +57,13 @@ module ParamChecker
   # +allowed+: the allowed symbol value to check +param+ against; could be
   #   a regular expression, a string, a symbol, an array of strings or an array of symbols.
   def check_symbol(param, default, allowed)
-    begin
-      if (param && allowed.class == Regexp && param.to_s =~ allowed)
-        param.to_sym
-      elsif (param && allowed.class == Array && allowed.map { |i| i.to_sym }.include?(param.to_sym))
-        param.to_sym
-      elsif (param && (allowed.class == String || allowed.class == Symbol) && allowed.to_sym == param.to_sym)
-        param.to_sym
-      else
-        default
-      end
-    rescue
+    if (param && !param.empty? && allowed.class == Regexp && param =~ allowed)
+      param.to_sym
+    elsif (param && !param.empty? && allowed.class == Array && allowed.map { |a| a.to_sym }.include?(param.to_sym))
+      param.to_sym
+    elsif (param && !param.empty? && (allowed.class == String || allowed.class == Symbol) && allowed.to_sym == param.to_sym)
+      param.to_sym
+    else
       default
     end
   end
