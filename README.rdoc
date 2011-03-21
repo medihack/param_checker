@@ -22,40 +22,44 @@ Include the ParamChecker module where ever you like. I usually put it into my Ra
     include ParamChecker
   end
 
-You can then simply call for example <tt>check_string(param_to_check, "my default", ["foo", "bar"])</tt> in every controller.
+You can then simply call for example <tt>check_string(params[:name], "Mia", :allowed => ["foo", "bar"])</tt> in every controller.
 
 Instead of including the module you could also call all functions of the module directly, like
 
-  ParamChecker.check_string(param_to_check, "my default", ["foo", "bar"])
+  ParamChecker.check_string(params[:name], "Mia", ["foo", "bar"])
 
 There are currently 5 supported functions:
 
-  check_integer(param, default, min, max)
-  check_float(param, default, min, max)
-  check_string(param, default, allowed)
-  check_symbol(param, default, allowed)
-  check_boolean(param, default)
+  check_integer(param, default, options)
+  check_float(param, default, options)
+  check_string(param, default, options)
+  check_symbol(param, default, options)
+  check_boolean(param, default, options)
 
-* +param+ (_required_) is the string parameter to check.
-* +default+ (_required_) is the value that is returned when +param+ does not pass the check.
-* +min+ (_optional_), +max+ (_optional_) in +check_integer+ and +check_float+ are the minimum and maximum allowed values of param. (If not provided then no range is checked at all.)
-* +allowed+ (_optional_) in +check_string+ and +check_symbol+ represent the allowed values of +param+. They can be either a string (resp. a symbol for +check_symbol+), a regular expression, or an array of strings (resp. symbols for +check_symbol+).
-* +check_boolean+ evaluates "1" or "true" string as true and "0" or "false" string to false.
+* +param+ is the string parameter to check.
+* +default+ is the value that will be returned when +param+ does not pass the check.
+* +options+ are function specific options to check +param+ against:
+  * +min+, +max+ in +check_integer+ and +check_float+ are the minimum and maximum allowed values of param. (If not provided then no range is checked at all.)
+  * +allowed+ in +check_string+ and +check_symbol+ represent the allowed values of +param+. It can be either a regular expression, a string (resp. a symbol for +check_symbol+),  or an array of strings (resp. an array of symbols for +check_symbol+).
+  * +true+ and +false+ represent the allowed string values for the true and false booleans. By default is :true => ["1", "true"] and :false => ["0", "false"]
 
-All functions return the the casted value (check_integer returns an integer, check_symbol returns a symbol, and so on).
+All functions return the casted value (check_integer returns an integer, check_symbol returns a symbol, and so on).
 
 == Examples
 
-Below are some simple examples how I use those function in my controllers.
+Below are some simple examples how to use those functions.
 
-  # +max+ is not provided in this case. I just want to ensure that page is bigger than 1 and otherwise return 1.
-  page = check_integer(params[:page], 1, 1)
+  # Check if per_page parameter is a valid integer representation, ensure that it is bigger than 1 and smaller than 100 and return its integer value. Otherwise return 10.
+  page = check_integer(params[:per_page], 10, :min => 1, :max => 100)
 
-  # Returns "name" if params[:field] is not "name" or "address"
-  field = check_string(params[:field], "name", ["name", "address"])
+  # If field parameter is equal to "name" or "address" then return it, otherwise return "name".
+  field = check_string(params[:field], "name", :allowed => ["name", "address"])
 
-  # Return the boolean if params[:accepted] is a valid boolean representation, and the default false otherwise.
+  # Return the boolean if params[:accepted] is a valid boolean representation and the default false otherwise.
   accepted = check_boolean(params[:accepted], false)
+
+  # Have custom boolean string representation values.
+  accepted = check_boolean(params[:accepted], false, :true => ["yep", "yes"], :false => ["nope", "no"])
 
 == Testing
 
