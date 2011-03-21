@@ -24,8 +24,8 @@ module ParamChecker
   # +min+: the minimum value allowed (optional)
   # +max+: the maximum value allowed (optional)
   def check_float(param, default, min = nil, max = nil)
-    min_lambda = (min.nil? ? lambda { true } : lambda { param.to_i >= min })
-    max_lambda = (max.nil? ? lambda { true } : lambda { param.to_i <= max })
+    min_lambda = (min.nil? ? lambda { true } : lambda { param.to_f >= min })
+    max_lambda = (max.nil? ? lambda { true } : lambda { param.to_f <= max })
 
     if (param && param.strip =~ /^-?[0-9]+(\.[0-9]+)?$/ && min_lambda.call && max_lambda.call)
       param.to_f

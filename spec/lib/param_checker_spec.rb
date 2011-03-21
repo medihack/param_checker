@@ -35,6 +35,7 @@ describe "ParamChecker" do
       @model.check_float("5.1", 99.2, 4.3, 6.4).should == 5.1
       @model.check_float("-5.1", 99.2).should == -5.1
       @model.check_float(" 5.1 ", 99.2).should == 5.1
+      @model.check_float("5.1", 99.2, 5.1, 5.1).should == 5.1
     end
 
     it "should fail" do
