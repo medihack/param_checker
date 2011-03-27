@@ -39,13 +39,13 @@ There are currently 5 supported functions:
 * +param+ is the string parameter to check.
 * +default+ is the value that will be returned when +param+ does not pass the check.
 * +options+ are function specific options to check +param+ against:
-  * +min+, +max+ in +check_integer+ and +check_float+ are the minimum and maximum allowed values of param. (If not provided then no range is checked at all.)
-  * +allowed+ in +check_string+ and +check_symbol+ represent the allowed values of +param+. It can be either a regular expression, a string (resp. a symbol for +check_symbol+),  or an array of strings (resp. an array of symbols for +check_symbol+).
-  * +true+ and +false+ represent the allowed string values for the true and false booleans. By default is :true => ["1", "true"] and :false => ["0", "false"]
+  * +:min+, +:max+ in +check_integer+ and +check_float+ are the minimum and maximum allowed values of param. (If not provided then no range is checked at all.)
+  * +:allowed+ in +check_string+ and +check_symbol+ represent the allowed values of +param+. It can be either a regular expression, a string (resp. a symbol for +check_symbol+),  or an array of strings (resp. an array of symbols for +check_symbol+).
+  * +:true+ and +:false+ represent the allowed string values for the true and false booleans. By default is :true => ["1", "true"] and :false => ["0", "false"]
 
 All functions return the casted value (check_integer returns an integer, check_symbol returns a symbol, and so on).
 
-== Examples
+=== Examples
 
 Below are some simple examples how to use those functions.
 
@@ -60,6 +60,33 @@ Below are some simple examples how to use those functions.
 
   # Have custom boolean string representation values.
   accepted = check_boolean(params[:accepted], false, :true => ["yep", "yes"], :false => ["nope", "no"])
+
+== Alternative usage
+
+Since version 0.3 you can also extend your Hash or HashWithIndifferentAccess with ParamChecker::HashExt. This will allow you to directly call the ParamChecker methods on the +params+ hash:
+
+   params.check(type, params_key, default, options)
+
++type+ can be:
+
+* +:i+ or +:integer+ calls check_integer internally
+* +:f+ or +:float+ calls check_float internally
+* +:s+ or +:string+ calls check_string internally
+* +:sym+ or +:symbol+ calls check_symbol internally
+* +:b+ or +:boolean+ calls check boolean internally
+
++params_key+ can be either an array of keys or just one key to access the hash.
+
+=== Examples
+
+    # Checks params[:page] and returns the integer representation if valid.
+    params.check(:i, :page, 5, :min => 1)
+
+    # Check params[:company][:name] and returns "Comparilla" if invalid.
+    params.check(:s, [:company, :name], "Comparilla")
+
+    # Does exactly the same (alternative type symbol for string type)
+    params.check(:string, [:company, :name], "Comparilla")
 
 == Testing
 

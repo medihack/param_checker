@@ -121,6 +121,59 @@ describe "ParamChecker" do
     end
   end
 
+  describe "hash extension" do
+
+
+    before do
+      class Hash
+        include ParamChecker::HashExt
+      end
+
+      @params = Hash[
+        :lorem => "ipsum",
+        :foo => { :bar => "dato" }
+      ]
+     # @params.extend(ParamChecker::HashExt)
+    end
+
+    it "should call param checker module functions" do
+      ParamChecker.should_receive(:check_integer)
+      @params.check(:i, :lorem, nil)
+
+      ParamChecker.should_receive(:check_integer)
+      @params.check(:integer, :lorem, nil)
+
+      ParamChecker.should_receive(:check_float)
+      @params.check(:f, :lorem, nil)
+
+      ParamChecker.should_receive(:check_float)
+      @params.check(:float, :lorem, nil)
+
+      ParamChecker.should_receive(:check_string)
+      @params.check(:s, :lorem, nil)
+
+      ParamChecker.should_receive(:check_string)
+      @params.check(:string, :lorem, nil)
+
+      ParamChecker.should_receive(:check_symbol)
+      @params.check(:sym, :lorem, nil)
+
+      ParamChecker.should_receive(:check_symbol)
+      @params.check(:symbol, :lorem, nil)
+
+      ParamChecker.should_receive(:check_boolean)
+      @params.check(:b, :lorem, nil)
+
+      ParamChecker.should_receive(:check_boolean)
+      @params.check(:boolean, :lorem, nil)
+    end
+
+    it "should use multiple keys" do
+      ParamChecker.should_receive(:check_string).with("dato", nil, {})
+      @params.check(:s, [:foo, :bar], nil)
+    end
+  end
+
   it "can be called as module functions" do
     ParamChecker.check_integer("5", 99).should == 5
     ParamChecker.check_float("5.1", 99.2).should == 5.1

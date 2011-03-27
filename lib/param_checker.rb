@@ -96,3 +96,5 @@ module ParamChecker
          :check_symbol,
          :check_boolean
 end
+
+require 'param_checker/hash_ext'

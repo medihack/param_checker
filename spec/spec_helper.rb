@@ -1,5 +1,6 @@
 $LOAD_PATH.unshift(File.dirname(__FILE__) + '/../lib')
 require 'param_checker'
+require 'param_checker/hash_ext'
 
 load(File.dirname(__FILE__) + '/model.rb')
 
