@@ -1,6 +1,6 @@
 = ParamChecker
 
-ParamChecker is a small Ruby library for validating and casting string parameters. It is for example a handy way to check GET/POST +params+ in Ruby On Rails.
+ParamChecker is a small Ruby library for validating and casting string parameters. It is for example a handy way to check GET/POST parameters in Rails or Sinatra.
 
 == Installation
 
@@ -24,11 +24,11 @@ Include the ParamChecker module where ever you like. I usually put it into my Ra
 
 You can then simply call for example <tt>check_string(params[:name], "Mia", :allowed => ["foo", "bar"])</tt> in every controller.
 
-Instead of including the module you could also call all functions of the module directly, like
+Instead of including the module you could also call all methods of the module directly, like
 
   ParamChecker.check_string(params[:name], "Mia", ["foo", "bar"])
 
-There are currently 5 supported functions:
+ParamChecker uses five methods:
 
   check_integer(param, default, options)
   check_float(param, default, options)
@@ -36,18 +36,20 @@ There are currently 5 supported functions:
   check_symbol(param, default, options)
   check_boolean(param, default, options)
 
-* +param+ is the string parameter to check.
-* +default+ is the value that will be returned when +param+ does not pass the check.
-* +options+ are function specific options to check +param+ against:
-  * +:min+, +:max+ in +check_integer+ and +check_float+ are the minimum and maximum allowed values of param. (If not provided then no range is checked at all.)
-  * +:allowed+ in +check_string+ and +check_symbol+ represent the allowed values of +param+. It can be either a regular expression, a string (resp. a symbol for +check_symbol+),  or an array of strings (resp. an array of symbols for +check_symbol+).
-  * +:true+ and +:false+ represent the allowed string values for the true and false booleans. By default is :true => ["1", "true"] and :false => ["0", "false"]
+where the function parameters are:
 
-All functions return the casted value (check_integer returns an integer, check_symbol returns a symbol, and so on).
+* <tt>param</tt>: The string parameter to check.
+* <tt>default</tt>: The value that will be returned when +param+ does not pass the check.
+* <tt>options</tt>: Function specific options to check +param+ against:
+  * <tt>:min</tt>, <tt>:max</tt> in <tt>check_integer</tt> and </tt>check_float<tt>: The minimum and maximum allowed values of param. If it is not provided then no range is checked at all.
+  * <tt>:allowed</tt> in <tt>check_string</tt> and <tt>check_symbol</tt>: Represents the allowed values of <tt>param</tt>. It can be either a regular expression, a string (resp. a symbol for <tt>check_symbol</tt>), or an array of strings (resp. an array of symbols for <tt>check_symbol</tt>).
+  * <tt>:true</tt> and <tt>:false</tt> in <tt>check_boolean</tt>: Represents the allowed string values for true and false. Default is :true => ["1", "true"] and :false => ["0", "false"].
+
+All methods return the casted value (check_integer returns an integer, check_symbol returns a symbol, and so on).
 
 === Examples
 
-Below are some simple examples how to use those functions.
+Below are some simple examples how to use ParamChecker:
 
   # Check if per_page parameter is a valid integer representation, ensure that it is bigger than 1 and smaller than 100 and return its integer value. Otherwise return 10.
   page = check_integer(params[:per_page], 10, :min => 1, :max => 100)
@@ -55,27 +57,27 @@ Below are some simple examples how to use those functions.
   # If field parameter is equal to "name" or "address" then return it, otherwise return "name".
   field = check_string(params[:field], "name", :allowed => ["name", "address"])
 
-  # Return the boolean if params[:accepted] is a valid boolean representation and the default false otherwise.
+  # Return the boolean if params[:accepted] is a valid string representation of a boolean and return false otherwise.
   accepted = check_boolean(params[:accepted], false)
 
-  # Have custom boolean string representation values.
+  # Custom boolean string representation values.
   accepted = check_boolean(params[:accepted], false, :true => ["yep", "yes"], :false => ["nope", "no"])
 
 == Alternative usage
 
 Since version 0.3 you can also extend your Hash or HashWithIndifferentAccess with ParamChecker::HashExt. This will allow you to directly call the ParamChecker methods on the +params+ hash:
 
-   params.check(type, params_key, default, options)
+  params.check(type, keys, default, options)
 
-+type+ can be:
+<tt>type</tt> can be:
 
-* +:i+ or +:integer+ calls check_integer internally
-* +:f+ or +:float+ calls check_float internally
-* +:s+ or +:string+ calls check_string internally
-* +:sym+ or +:symbol+ calls check_symbol internally
-* +:b+ or +:boolean+ calls check boolean internally
+* <tt>:i</tt> or <tt>:integer</tt> calls check_integer internally
+* <tt>:f</tt> or <tt>:float</tt> calls check_float internally
+* <tt>:s</tt> or <tt>:string</tt> calls check_string internally
+* <tt>:sym</tt> or <tt>:symbol</tt> calls check_symbol internally
+* <tt>:b</tt> or <tt>:boolean</tt> calls check boolean internally
 
-+params_key+ can be either an array of keys or just one key to access the hash.
+<tt>params_key</tt> can be either an array of keys or just one key to access the hash.
 
 === Examples
 
@@ -85,7 +87,7 @@ Since version 0.3 you can also extend your Hash or HashWithIndifferentAccess wit
     # Check params[:company][:name] and returns "Comparilla" if invalid.
     params.check(:s, [:company, :name], "Comparilla")
 
-    # Does exactly the same (alternative type symbol for string type)
+    # Does exactly the same.
     params.check(:string, [:company, :name], "Comparilla")
 
 == Testing
